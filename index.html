@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retinopathy Detector</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Include Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-wOVUKI4c73+Ig9g6hHSzdm/vEKq2aEPJUM5L1mxnT3YqyjTl94a9ep6AuL0rAu9Y" crossorigin="anonymous">
+</head>
+<body>
+  <nav>
+    <div class="navbar-left">
+      <i class="fas fa-camera-retro"></i>
+      <h1>Retinopathy Detector</h1>
+    </div>
+    <ul class="navbar-right">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#resources">Resources</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2 class="mianh">Select Pictures</h2>
+    <p class="mainpara">Click the big button below to add pictures from your device or take a photo using the camera (on mobile).</p>
+    <label for="imageInput" class="add-icon">+</label>
+    <button id="cameraButton">Capture from Camera</button>
+    <!-- <input type="file" accept="image/*" capture="camera"> -->
+    <!-- <input type="file" accept="image/*" capture="camera"> -->
+    
+    <input type="file" id="imageInput" accept="image/*" capture="camera" multiple style="display: none;"> <!-- Hide the "Choose File" button -->
+    <button id="remove-images-button">Remove Images</button>
+    <button id="detectButton">Detect</button>
+    <div id="imageContainer"></div>
+    <div id="alertContainer"></div>
+  </main>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
