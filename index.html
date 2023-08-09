@@ -3,37 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Retinopathy Detector</title>
   <link rel="stylesheet" href="styles.css">
-  <!-- Include Font Awesome CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-wOVUKI4c73+Ig9g6hHSzdm/vEKq2aEPJUM5L1mxnT3YqyjTl94a9ep6AuL0rAu9Y" crossorigin="anonymous">
+  <title>Retinopathy Detector</title>
 </head>
 <body>
-  <nav>
-    <div class="navbar-left">
-      <i class="fas fa-camera-retro"></i>
-      <h1>Retinopathy Detector</h1>
-    </div>
-    <ul class="navbar-right">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#resources">Resources</a></li>
-    </ul>
-  </nav>
-  <main>
-    <h2 class="mianh">Select Pictures</h2>
-    <p class="mainpara">Click the big button below to add pictures from your device or take a photo using the camera (on mobile).</p>
-    <label for="imageInput" class="add-icon">+</label>
-    <button id="cameraButton">Capture from Camera</button>
-    <!-- <input type="file" accept="image/*" capture="camera"> -->
-    <!-- <input type="file" accept="image/*" capture="camera"> -->
+  <div class="navbar">
+    <h1 class="navbar-title">Retinopathy Detector</h1>
+  </div>
+  <div class="content-container">
     
-    <input type="file" id="imageInput" accept="image/*" capture="camera" multiple style="display: none;"> <!-- Hide the "Choose File" button -->
-    <button id="remove-images-button">Remove Images</button>
-    <button id="detectButton">Detect</button>
-    <div id="imageContainer"></div>
-    <div id="alertContainer"></div>
-  </main>
+    <h2 class="select-images-title">Select Images</h2>
+    <div class="image-container">
+      <div class="box">
+        <label for="file-input-1" class="box-label">+</label>
+        <input type="file" id="file-input-1" class="file-input" accept="image/*">
 
+        <img class="img-preview" alt="Preview" style="display: none;">
+     
+      </div>
+      <div class="box">
+        <label for="file-input-2" class="box-label">+</label>
+        <input type="file" id="file-input-2" class="file-input" accept="image/*">
+      </div>
+      <div class="box">
+        <label for="file-input-3" class="box-label">+</label>
+        <input type="file" id="file-input-3" class="file-input" accept="image/*">
+      </div>
+      <div class="box">
+        <label for="file-input-4" class="box-label">+</label>
+        <input type="file" id="file-input-4" class="file-input" accept="image/*">
+      </div>
+      <div class="box">
+        <label for="file-input-5" class="box-label">+</label>
+        <input type="file" id="file-input-5" class="file-input" accept="image/*">
+      </div>
+    </div>
+    <button id="detect-button" class="detect-button">Detect</button>
+  </div>
+
+  <div id="camera-popup" class="camera-popup">
+    <div class="camera-popup-content">
+      <video id="camera-feed" autoplay></video>
+      <button id="capture-button" class="capture-button">Capture</button>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="scripts.js"></script>
 </body>
 </html>

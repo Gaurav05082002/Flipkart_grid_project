@@ -1,106 +1,166 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const imageInput = document.getElementById('imageInput');
-    const detectButton = document.getElementById('detectButton');
-    const imageContainer = document.getElementById('imageContainer');
-  
-    let selectedImages = [];
-  
-    imageInput.addEventListener('change', () => {
-      const newImages = Array.from(imageInput.files);
-  
-      if (selectedImages.length + newImages.length <= 5) {
-        selectedImages = selectedImages.concat(newImages);
-      } else {
-        alert('You can only select up to 5 images. Please remove some images and try again.');
-      }
-  
-      renderImages();
-    });
-  
-    imageContainer.addEventListener('click', (event) => {
-      const clickedImageIndex = [...imageContainer.children].indexOf(event.target);
-      if (clickedImageIndex !== -1) {
-        imageInput.value = '';
-        imageInput.click();
-      }
-    });
+document.addEventListener("DOMContentLoaded", () => {
+  // const fileInputs = document.querySelectorAll(".file-input");
+  const fileInputs = document.querySelectorAll(".file-input");
 
-    const cameraButton = document.getElementById('cameraButton');
-
-   cameraButton.addEventListener('click', async () => {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        const imageCapture = new ImageCapture(stream.getVideoTracks()[0]);
-
-        const blob = await imageCapture.takePhoto();
-        const imageFile = new File([blob], 'captured-image.png');
-        selectedImages.push(imageFile);
-        renderImages();
-
-        stream.getTracks().forEach(track => track.stop());
-    } catch (error) {
-        console.error('Error accessing camera:', error);
-    }
-});
 
   
-    detectButton.addEventListener('click', () => {
-      if (selectedImages.length === 5) {
-        // Simulate ML model response (Replace this part with actual ML model integration)
-        const mlResponse = [
-          'Object detected in Image 1',
-          'Object detected in Image 2',
-          'Object detected in Image 3',
-          'Object detected in Image 4',
-          'Object detected in Image 5',
-        ];
-  
-        showMLResponse(mlResponse);
-      } else {
-        alert('Please select 5 images before clicking the "Detect" button.');
+  fileInputs.forEach((input) => {
+    input.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+          const box = input.parentElement;
+          const boxId = box.id;
+          const imgPreview = document.createElement("img");
+          imgPreview.classList.add("img-preview");
+          imgPreview.src = e.target.result;
+
+          const removeBtn = document.createElement("button");
+          removeBtn.classList.add("remove-btn");
+          removeBtn.innerText = "Remove";
+          removeBtn.addEventListener("click", () => {
+            box.removeChild(imgPreview);
+            box.removeChild(removeBtn);
+            input.value = "";
+            box.querySelector(".box-label").style.display = "block";
+          });
+
+          box.appendChild(imgPreview);
+          box.appendChild(removeBtn);
+          box.querySelector(".box-label").style.display = "none";
+        };
+        
+        reader.readAsDataURL(file);
       }
     });
-// Function to handle the "Remove Images" button click
-const removeImagesButton = document.getElementById('remove-images-button');
-removeImagesButton.addEventListener('click', removeImages);
-
-// Function to handle the "Remove Images" button click
-function removeImages() {
-    const imageInput = document.getElementById('imageInput');
-    imageInput.value = ''; // Clear the file input value
-    selectedImages = [];
-    renderImages();
-}
-
-
-
-
-  
-    function renderImages() {
-      imageContainer.innerHTML = '';
-      selectedImages.forEach((imageFile) => {
-        const imageElement = document.createElement('img');
-        imageElement.src = URL.createObjectURL(imageFile);
-        imageElement.classList.add('selected');
-        imageElement.addEventListener('click', () => {
-          imageInput.value = '';
-          imageInput.click();
-        });
-        imageContainer.appendChild(imageElement);
-      });
-    }
-  
-    function showMLResponse(mlResponse) {
-      imageContainer.innerHTML = '';
-      mlResponse.forEach((response, index) => {
-        const imageElement = document.createElement('img');
-        imageElement.src = selectedImages[index] ? URL.createObjectURL(selectedImages[index]) : '';
-        imageElement.alt = response;
-        imageElement.title = response;
-        imageContainer.appendChild(imageElement);
-      });
-    }
-
 
   });
+
   
+
+const detectButton = document.getElementById("detect-button");
+
+ 
+
+
+
+  function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        resolve(event.target.result);
+      };
+      reader.onerror = (event) => {
+        reject(event.error);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+
+  detectButton.addEventListener("click", () => {
+    const imagePreviews = document.querySelectorAll(".img-preview");
+    const images = Array.from(imagePreviews).map((img) => img.src);
+
+    // Make a POST request to the API with the 'images' data
+    // Handle the API response and display it on the webpage
+    // Example code (using fetch):
+    /*
+    fetch("YOUR_API_ENDPOINT", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ images }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle API response data and display on the webpage
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    */
+      // Simulated API response data for demonstration
+    const apiResponse = [{
+      grade: 1,
+      diseaseName: "retinopathy",
+      stage: "medium",
+      accuracy: "92%",
+    }];
+
+    // Create and populate the report div
+    const reportDiv = document.createElement("div");
+    reportDiv.classList.add("report");
+    
+    const reportContent = `
+      <h2>Diagnostic Report</h2>
+      <p><strong>Grade:</strong> ${apiResponse[0].grade}</p>
+      <p><strong>Disease Name:</strong> ${apiResponse[0].diseaseName}</p>
+      <p><strong>Stage:</strong> ${apiResponse[0].stage}</p>
+      <p><strong>Accuracy:</strong> ${apiResponse[0].accuracy}</p>
+      <p><strong>Date & Time:</strong> ${getCurrentDateTime()}</p>
+      <label for="fullName">Full Name:</label>
+      <input type="text" id="fullName">
+      <button id="printButton">Print as PDF</button>
+
+    `;
+
+    reportDiv.innerHTML = reportContent;
+    document.body.appendChild(reportDiv);
+
+
+
+    // Print button click handler
+    const printButton = document.getElementById("printButton");
+    printButton.addEventListener("click", () => {
+      const fullName = document.getElementById("fullName").value;
+      const reportContentWithFullName = `
+        <h2>Diagnostic Report for ${fullName}</h2>
+        ${reportContent}
+      `;
+      printPageArea(report);
+      // printPDF(reportContentWithFullName);
+    });
+
+  });
+  function printPDF(content) {
+    const pdf = new jsPDF();
+    pdf.text(content, 10, 10);
+  
+    // Save the PDF
+    pdf.save("diagnostic_report.pdf");
+  }
+  // function printPDF(content) {
+  //   const pdf = new jsPDF();
+  //   pdf.text(content, 10, 10);
+  
+  //   const pdfBlob = pdf.output("blob");
+  //   const pdfUrl = URL.createObjectURL(pdfBlob);
+  
+  //   const printWindow = window.open(pdfUrl);
+    
+  //   printWindow.onload = () => {
+  //     printWindow.print();
+  //     URL.revokeObjectURL(pdfUrl);
+  //   };
+  // }
+    // Function to get the current date and time
+    function getCurrentDateTime() {
+      const now = new Date();
+      return now.toLocaleString();
+    }
+  
+
+  
+
+    
+    
+
+
+    
+  
+});
+
