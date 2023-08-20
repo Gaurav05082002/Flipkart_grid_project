@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Retinopathy Detector</title>
+</head>
+<body>
+  <div class="navbar">
+    <h1 class="navbar-title">Retinopathy Detector</h1>
+  </div>
+  <div class="content-container">
+    
+    <h2 class="select-images-title">Select Images</h2>
+    <div class="image-container">
+      <div class="box">
+        <label for="file-input-1" class="box-label">+</label>
+        <input type="file" id="file-input-1" class="file-input" accept="image/*">
+
+        <img class="img-preview" alt="Preview" style="display: none;">
+     
+      </div>
+      <div class="box">
+        <label for="file-input-2" class="box-label">+</label>
+        <input type="file" id="file-input-2" class="file-input" accept="image/*">
+      </div>
+      <div class="box">
+        <label for="file-input-3" class="box-label">+</label>
+        <input type="file" id="file-input-3" class="file-input" accept="image/*">
+      </div>
+      <div class="box">
+        <label for="file-input-4" class="box-label">+</label>
+        <input type="file" id="file-input-4" class="file-input" accept="image/*">
+      </div>
+      <div class="box">
+        <label for="file-input-5" class="box-label">+</label>
+        <input type="file" id="file-input-5" class="file-input" accept="image/*">
+      </div>
+    </div>
+    <button id="detect-button" class="detect-button">Detect</button>
+  </div>
+
+  <div id="camera-popup" class="camera-popup">
+    <div class="camera-popup-content">
+      <video id="camera-feed" autoplay></video>
+      <button id="capture-button" class="capture-button">Capture</button>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>
